@@ -3,7 +3,7 @@
 `FutWaiter` is the container of `Future`'s that has the ability to complete them all at once.
 
 ## Example
-```
+```rust
 use futures::executor;
 use futures_timer::Delay;
 use futwaiter::{WaitObserver, Waitable};
