@@ -1,3 +1,9 @@
+# futwaiter
+
+`FutWaiter` is the container of `Future`'s that has the ability to complete them all at once.
+
+## Example
+```
 use futures::executor;
 use futures_timer::Delay;
 use futwaiter::{WaitObserver, Waitable};
@@ -41,3 +47,4 @@ fn main() {
         assert_eq!(cnt.load(Ordering::SeqCst), max);
     });
 }
+```
