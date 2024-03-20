@@ -4,6 +4,8 @@ version = "0.1.0"
 authors = ["Bells307"]
 description = "The container of Future's that has the ability to complete them all at once"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/bells307/futwaiter"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
