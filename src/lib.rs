@@ -6,10 +6,13 @@ mod global;
 #[cfg(test)]
 mod tests;
 
-pub use crate::waitable::{WaitObserver, Waitable};
+pub use crate::waitable::{Waitable, Waiter};
 
 #[cfg(feature = "global")]
-pub use crate::global::{push, set_global, take};
+pub use crate::{
+    global::{push, set_global, take},
+    waitable::GlobalWaiter,
+};
 
 use futures::{
     future::{BoxFuture, JoinAll},
@@ -69,7 +72,7 @@ impl Future for FutWaiter {
                     Poll::Ready(())
                 }
                 Poll::Pending => {
-                    // Take the value back
+                    // Put the value back
                     *lock = Some(join_all);
                     Poll::Pending
                 }

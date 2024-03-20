@@ -1,6 +1,6 @@
 use futures::executor;
 use futures_timer::Delay;
-use futwaiter::{WaitObserver, Waitable};
+use futwaiter::{GlobalWaiter, Waitable};
 use std::{
     sync::{
         atomic::{AtomicU32, Ordering},
@@ -32,8 +32,8 @@ fn main() {
         for _ in 0..max {
             let cnt = Arc::clone(&cnt);
 
-            // Set global wait observer for our object
-            let _obj = SomeObject(cnt).global_wait_observer();
+            // Set global waiter for our object
+            let _obj = SomeObject(cnt).global_waiter();
         }
 
         futwaiter::take().await;

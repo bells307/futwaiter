@@ -10,25 +10,34 @@ pub trait Waitable {
 
 /// The ability for an object that provides the `Waitable` interface to add its
 /// waitable `Future` to the `FutWaiter` container
-pub trait WaitObserver: Waitable + Clone {
-    fn wait_observer(self, fut_waiter: &FutWaiter) -> Self;
-    #[cfg(feature = "global")]
-    fn global_wait_observer(self) -> Self;
+pub trait Waiter: Waitable + Clone {
+    fn waiter(self, fut_waiter: &FutWaiter) -> Self;
 }
 
-impl<W> WaitObserver for W
+impl<W> Waiter for W
 where
     W: Waitable + Clone + 'static,
 {
-    fn wait_observer(self, fut_waiter: &FutWaiter) -> Self {
+    fn waiter(self, fut_waiter: &FutWaiter) -> Self {
         fut_waiter.push(self.clone().wait());
         self
     }
+}
 
+#[cfg(feature = "global")]
+pub trait GlobalWaiter: Waiter {
+    fn global_waiter(self) -> Self;
+}
+
+#[cfg(feature = "global")]
+impl<W> GlobalWaiter for W
+where
+    W: Waitable + Clone + 'static,
+{
     #[cfg(feature = "global")]
-    fn global_wait_observer(self) -> Self {
+    fn global_waiter(self) -> Self {
         match *FUTWAITER.lock() {
-            Some(ref fw) => self.wait_observer(fw),
+            Some(ref fw) => self.waiter(fw),
             None => panic!("global FUTWAITER is not set"),
         }
     }
